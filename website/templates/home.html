@@ -1,5 +1,101 @@
+<style>
+    .slidecontainer {
+  width: 25%; /* Width of the outside container */
+}
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 140px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 150%;
+  left: 50%;
+  margin-left: -75px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+</style>
+
 {% extends "base.html" %} 
 {% block title %}Password Generator{% endblock %}
 {% block content %} 
-<h1 align="center">Input</h1>
+<h1 align="center">Password Creator&#174;</h1>
+
+<form method="POST" name="formdata">
+    <label for="passwordSettingsLength">Password length</label>
+    <div class="slidecontainer">
+        <input type="range" class="custom-range" value=8 min="8" max="64" step="1" id="passwordSettingsLength" name="passwordSettingsLength" oninput="passwordSettingsLengthOutput.value = passwordSettingsLength.value">
+        <output name="passwordSettingsLengthOutput" id="passwordSettingsLengthOutput" for="passwordSettingsLength">8</output>
+    </div>
+
+    <br/>
+
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="passwordSettingsNumbers" name="passwordSettingsNumbers">
+        <label class="form-check-label" for="passwordSettingsNumbers">
+        Numbers (0 ... 9)
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="passwordSettingsSpecialChar" name="passwordSettingsSpecialChar">
+        <label class="form-check-label" for="passwordSettingsSpecialChar">
+        Symbols (!, @, #, etc.)
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="passwordSettingsUppercase" name="passwordSettingsUppercase">
+        <label class="form-check-label" for="passwordSettingsUppercase">
+        Uppercase
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="passwordSettingsLowercase" name="passwordSettingsLowercase">
+        <label class="form-check-label" for="passwordSettingsLowercase">
+        Lowercase
+        </label>
+    </div>
+
+    <br/>
+    <div>
+    <button class="btn btn-primary" type="submit">Create password</button>
+    </div>
+    </div>
+</form>
+
+{% for password in password_list %}
+<li class="list-group-item">
+    <button type="button" class="btn btn-outline-dark" onclick="copyText(&quot;{{ password }}&quot;)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16">
+        <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+        <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+      </svg>
+    </button>
+    {{ password }}
+</li>
+{% endfor %}
 {% endblock %}
